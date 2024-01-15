@@ -1,34 +1,50 @@
 from tkinter import *
+from itertools import cycle
 
 GAME_WIDTH = 600
 GAME_HEIGHT = 600
 BLOCK_SIZE = GAME_WIDTH / 8
 
+class Figure:
+    def __init__(self, t, c):
+        self.tile = t
+        self.color = c
+
+    class Pawn:
+        pass
+
 win = Tk()
 win.title("Schachbrett")
+win.resizable(False, False)
+
+pawnImg = PhotoImage(file="img\pawnW.png")
 
 canvas = Canvas(win, width=GAME_WIDTH, height=GAME_HEIGHT, background="gray", bd=-2)
 canvas.pack()
 
 chars = ["a","b","c","d","e","f","g","h"]
 
+color1 = "#769656"
+color2 = "#eeeed2"
+
 for num in range(1, 9):
+    if num % 2:
+        myIterator = cycle([color1, color2])
+    else: 
+        myIterator = cycle([color2, color1])
+
     for char in chars:
-        if num % 2:
-            color = "black"
-        else:
-            color = "white"
+        color = next(myIterator)
 
         x0 = BLOCK_SIZE * chars.index(char)
         y0 = GAME_HEIGHT - (BLOCK_SIZE * num)
         x1 = BLOCK_SIZE * (chars.index(char) + 1)
         y1 = GAME_HEIGHT - (BLOCK_SIZE	* (num - 1))
-        canvas.create_rectangle(x0, y0, x1, y1, fill=color, width=0)
-
+        canvas.create_rectangle(x0, y0, x1, y1, fill=color, width=0, tag=char + str(num))
+    
+canvas.create_image(canvas.coords("a1")[0], canvas.coords("a1")[1], image=pawnImg, anchor=NW)
 
 win.update()
-
-
 
 winWidth = win.winfo_width()
 winHeight = win.winfo_height()
