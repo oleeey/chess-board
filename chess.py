@@ -24,8 +24,8 @@ class Figure():
         return self.color
     
 
-
 class Pawn(Figure):
+    global whitePawn, blackPawn
     whitePawn = PhotoImage(file="img\\white-pawn.png")
     blackPawn = PhotoImage(file="img\\black-pawn.png")
 
@@ -34,7 +34,15 @@ class Pawn(Figure):
         self.tile = t
         self.color = c
         self.image = ""
+
+        if self.color == "white":
+            self.image = whitePawn
+        else:
+            self.image = blackPawn
+
         super().drawImg(self.tile, self.color, self.image)
+
+
         
     
 canvas = Canvas(win, width=GAME_WIDTH, height=GAME_HEIGHT, background="gray", bd=-2)
@@ -72,9 +80,15 @@ y = int((screenHeight/2) - (winHeight/2))
 win.geometry(f"{winWidth}x{winHeight}+{x}+{y}")
 
 def drawFigures():
-    for i in range(1,9):
-        Pawn(f'b{i}', "white")
+    for i in range(0,8):
+        tile = chars[i] + str(2)
+        print(tile)
+        Pawn(tile, "white")
 
+    for i in range(0,8):
+        tile = chars[i] + str(7)
+        print(tile)
+        Pawn(tile, "black")
 
 drawFigures()
 
