@@ -13,9 +13,7 @@ class Figure():
     def __init__(self):
        pass
 
-    def drawImg(self, t, c):
-        img = PhotoImage(file="img\\{0}-pawn.png".format(c))
-        win.img = img
+    def drawImg(self, t, c, img):      
         canvas.create_image(canvas.coords(t)[0], canvas.coords(t)[1], image=img, anchor=NW)
         
 
@@ -28,17 +26,17 @@ class Figure():
 
 
 class Pawn(Figure):
+    whitePawn = PhotoImage(file="img\\white-pawn.png")
+    blackPawn = PhotoImage(file="img\\black-pawn.png")
+
+    
     def __init__(self, t, c):
         self.tile = t
         self.color = c
-
-        pawnImg = PhotoImage(file="img\white-pawn.png")
-        canvas.create_image(canvas.coords("a1")[0], canvas.coords("a1")[1], image=pawnImg, anchor=NW)
-
-        super().drawImg(self.tile, self.color)
+        self.image = ""
+        super().drawImg(self.tile, self.color, self.image)
+        
     
-
-
 canvas = Canvas(win, width=GAME_WIDTH, height=GAME_HEIGHT, background="gray", bd=-2)
 canvas.pack()
 
@@ -73,10 +71,11 @@ y = int((screenHeight/2) - (winHeight/2))
 
 win.geometry(f"{winWidth}x{winHeight}+{x}+{y}")
 
+def drawFigures():
+    for i in range(1,9):
+        Pawn(f'b{i}', "white")
 
-pawnW = Pawn("a2", "white")
 
-
-
+drawFigures()
 
 win.mainloop()
